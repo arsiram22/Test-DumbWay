@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <title>Test 1</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-10">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Menghitung Kredit Rumah</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Type Rumah</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" v-model="tipeRumah">
+                                        <!-- <option value="" disabled></option> -->
+                                        <option value="rose">Rose</option>
+                                        <option value="gold">Gold</option>
+                                        <option value="platinum">Platinum</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Lama Kredit</label>
+                                <div class="col-sm-9">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" v-model="lamaKredit" value="12">
+                                        <label class="form-check-label">12 Bulan</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" v-model="lamaKredit" value="18">
+                                        <label class="form-check-label">18 Bulan</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" v-model="lamaKredit" value="24">
+                                        <label class="form-check-label">24 Bulan</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-outline-primary" v-on:click="hitungDp">Hitung</button>
+                        <!-- <tr v-if="!datalist.lenght"> -->
+                           
+                            <div v-if="hargaRumah">
+                                {{ hitung }}
+                                <div class="mt-5 row">
+                                    <p class="col-sm-3">Type Rumah</p>
+                                    <div class="col-sm-9">
+                                        {{ tipeRumah }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-3">Harga Rumah</p>
+                                    <div class="col-sm-9">
+                                        {{ formatRupiah(hargaRumah) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-3">Uang Muka</p>
+                                    <div class="col-sm-9">
+                                        {{ formatRupiah(uangMuka) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-3">Sisa</p>
+                                    <div class="col-sm-9">
+                                        {{ formatRupiah(sisa) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-3">Lama Kredit</p>
+                                    <div class="col-sm-9">
+                                        {{ lamaKredit }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-3">Angsuran</p>
+                                    <div class="col-sm-9">
+                                        {{ formatRupiah(angsuran) }}
+                                    </div>
+                                </div>
+
+                                <table class="table">
+                                    <thead>
+                                        <tr class="text-right">
+                                            <th>Bulan</th>
+                                            <th>Angsuran</th>
+                                            <th>Sisa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-html="list_detail(this.hargaRumah,this.uangMuka,this.lamaKredit)">
+                                       
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- vue -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<script>
+    var app2 = new Vue({
+        el: "#app",
+        data: {
+            tipeRumah:"",
+            angsuran: "",
+            hargaRumah:"",
+            uangMuka:"",
+            sisa:"",
+            lamaKredit:"",
+
+        },
+        methods: {
+             hitungDp: function () {
+                switch (this.tipeRumah) {
+                    case "rose":
+                        this.hargaRumah = 120000000;
+                        this.uangMuka = this.hargaRumah * 0.2;
+                        this.sisa=this.hargaRumah-this.uangMuka;
+                        this.angsuran=this.pembulat(this.sisa/this.lamaKredit);
+                        break;
+                    case "gold":
+                        this.hargaRumah = 300000000;
+                        this.uangMuka = this.hargaRumah * 0.2;
+                        this.sisa = this.hargaRumah - this.uangMuka;
+                        this.angsuran = this.pembulat(this.sisa / this.lamaKredit);
+                        break;
+                    case "platinum":
+                        this.hargaRumah = 360000000;
+                        this.uangMuka = this.hargaRumah * 0.2;
+                        this.sisa = this.hargaRumah - this.uangMuka;
+                        this.angsuran = this.pembulat(this.sisa / this.lamaKredit);
+                        break;
+                    default:
+                        
+                }
+            },
+           list_detail: function (pv, dp, lama) {
+                var sisa = pv - dp;
+                var sd = lama;
+                var out = '';
+                for(i = 0; i<sd; i++) {
+
+                    sisa =this.pembulat(sisa-this.angsuran);
+                    // console.log(sisa);
+                    out += '<tr><td align="right">' + (i + 1) + '</td><td align="right">' + this.formatRupiah(this.angsuran) + '</td><td align="right">' + this.formatRupiah(sisa) + '</td></tr>';
+
+                }
+                    return out;
+                },
+                formatRupiah(bilangan){
+                   var number_string = bilangan.toString(),
+                        sisa = number_string.length % 3,
+                        rupiah = number_string.substr(0, sisa),
+                        ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+                    if (ribuan) {
+                        separator = sisa ? '.' : '';
+                        rupiah += separator + ribuan.join('.');
+                    }
+
+                    // Cetak hasil
+                    return rupiah
+
+                    
+                },
+                formatNum(out) {
+                    return Number(out.toFixed(2)).toLocaleString('id');
+                 },
+                pembulat(int){
+                    // return Math.round(int)
+                    return + (Math.round(int + "e+2") + "e-2");  
+                },
+               
+
+        },
+        computed: {
+            hitung: function () {
+                switch (this.tipeRumah) {
+                    case "rose":
+                        this.hargaRumah = 120000000;
+                        this.uangMuka = this.hargaRumah * 0.2;
+                        this.sisa = this.hargaRumah - this.uangMuka;
+                        this.angsuran = this.pembulat(this.sisa / this.lamaKredit);
+                        break;
+                    case "gold":
+                        this.hargaRumah = 300000000;
+                        this.uangMuka = this.hargaRumah * 0.2;
+                        this.sisa = this.hargaRumah - this.uangMuka;
+                        this.angsuran = this.pembulat(this.sisa / this.lamaKredit);
+                        break;
+                    case "platinum":
+                        this.hargaRumah = 360000000;
+                        this.uangMuka = this.hargaRumah * 0.2;
+                        this.sisa = this.hargaRumah - this.uangMuka;
+                        this.angsuran = this.pembulat(this.sisa / this.lamaKredit);
+                        break;
+                    default:
+
+                }
+            },
+        },
+    })
+</script>
+
+</html>
