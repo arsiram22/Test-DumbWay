@@ -31,6 +31,10 @@
                                                         <h4 class="card-title">{{ $s->name_school }}</h4>
                                                         <p class="card-text">{{ $s->status_school }}</p>
                                                         <a href="{{ route('school.show',$s->id) }}" class="btn btn-primary">Detail</a>
+                                                        <a href="{{ route('school.edit',$s->id) }}" class="btn btn-warning">Edit</a>
+                                                        <a href="{{ route('school.destroy',$s->id) }}" class="btn btn-danger">Hapus</a>
+
+
                                                     </div>
                                                 </div>
                                             </div>

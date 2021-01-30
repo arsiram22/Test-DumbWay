@@ -18,7 +18,12 @@
                         </div>
                         <div class="card-body">
                             <p><img class=" img-fluid" src="{{ $school->logo_school }}" alt="card image"></p>
-
+                            <div class=" row">
+                           <p class="col-sm-3">Nama</p>
+                           <div class="col-sm-9">
+                               {{ $school->name_school }}
+                            </div>
+                        </div>
                             <div class=" row">
                            <p class="col-sm-3">NPSN</p>
                            <div class="col-sm-9">

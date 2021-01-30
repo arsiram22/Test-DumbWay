@@ -19,6 +19,7 @@
                         </div>
                         <div class="card-body">
                             <form action="{{ route('school.store') }}" method="post">
+                                @csrf
                                     <div class="form-group">
                                       <label for="">Nama Sekolah</label>
                                       <input type="text" class="form-control" placeholder="masukan nama sekolah" name="name">
@@ -36,12 +37,12 @@
                                     </div>
                                      <div class="form-group">
                                       <label for="">Level</label>
-                                      <input type="text" class="form-control" placeholder="masukan level">
+                                      <input type="text" class="form-control" placeholder="masukan level" name="level">
                                       {{-- <small id="helpId" class="text-muted error">Help text</small> --}}
                                     </div>
                                      <div class="form-group">
                                       <label for="">Status</label>
-                                      <input type="text" class="form-control" placeholder="masukan status">
+                                      <input type="text" class="form-control" placeholder="masukan status" name="status">
                                       {{-- <small id="helpId" class="text-muted error">Help text</small> --}}
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>

@@ -38,14 +38,26 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-        ]);
+        // $request->validate([
+        //     'title' => 'required',
+        //     'content' => 'required',
 
-        ScoolTb::create($request->all());
+        $sc = new ScoolTb;
+        $sc->npsn = $request->npsn;
+        $sc->name_school = $request->name;
+        $sc->address = $request->address;
+        $sc->logo_school= "https://ui-avatars.com/api/?name=".$request->name;
+        $sc->school_level= $request->level;
+        $sc->status_school=$request->status;
+        $sc->user_id=1;
+        $sc->save();
 
-        return redirect()->route('sc.index')
+        // if ($sc) {
+        //     return redirect()->route('sc.index')
+        //     ->with('success', 'Berhasil Di Buat.');
+        // }
+
+        return redirect()->route('school.index')
         ->with('success', 'Berhasil Di Buat.');
     }
 
@@ -68,8 +80,8 @@ class SchoolController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        return view('sc.edit', compact('id'));
+    {    $school = ScoolTb::findOrFail($id);
+        return view('sc.edit', compact('school'));
 
     }
 
@@ -82,16 +94,21 @@ class SchoolController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-        ]);
-        $school = ScoolTb::findOrFail($id);
+        // $request->validate([
+        //     'title' => 'required',
+        //     'content' => 'required',
+        // ]);
+        $sc = ScoolTb::findOrFail($id);
+        $sc->npsn = $request->npsn;
+        $sc->name_school = $request->name;
+        $sc->address = $request->address;
+        $sc->logo_school = "https://ui-avatars.com/api/?name=" . $request->name;
+        $sc->school_level = $request->level;
+        $sc->status_school = $request->status;
+        $sc->save();
 
-        $school->update($request->all());
-
-        return redirect()->route('sc.index')
-                        ->with('success','Berhasil Di Update');
+        // return redirect()->route('school.index')
+        //                 ->with('success','Berhasil Di Update');
     }
 
     /**
@@ -105,7 +122,7 @@ class SchoolController extends Controller
         $school = ScoolTb::findOrFail($id);
         $school->delete();
 
-        return redirect()->route('sc.index')
+        return redirect()->route('school.index')
         ->with('success',  'Berhasil Di Hapus');
     }
 }
