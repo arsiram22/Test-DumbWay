@@ -27,7 +27,7 @@
                                             <div class="frontside">
                                                 <div class="card" >
                                                     <div class="card-body text-center">
-                                                        <p><img class=" img-fluid" src="" alt="card image"></p>
+                                                        <p><img class=" img-fluid" src="{{ $s->logo_school }}"  alt="card image"></p>
                                                         <h4 class="card-title">{{ $s->name_school }}</h4>
                                                         <p class="card-text">{{ $s->status_school }}</p>
                                                         <a href="{{ route('school.show',$s->id) }}" class="btn btn-primary">Detail</a>
